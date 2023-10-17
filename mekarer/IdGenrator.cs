@@ -11,6 +11,10 @@ namespace mekarer
         {
          return idNumber++;
         }
-        
+        public static int giveIdHash()
+        {
+            return idNumber.GetHashCode();
+        }
+
     }
 }
