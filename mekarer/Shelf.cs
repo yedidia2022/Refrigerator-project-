@@ -13,34 +13,39 @@ namespace mekarer
     internal class Shelf  /*IEquatable<Item>, IComparable<Item>*/
     {
         private int shelfId;
-        //האם אני צריכה בסט לבדןק שאכן הקומה שאני רוצה לשנות קיימת במקרר הנוכחי - אם כן איך עושים זאת
         private int floorNum;
         private List<Item> items;
         private double shelfSizeOnSMR;
-        public Shelf(int num, double SMR)
+
+        public int ShelfId { get; private set; }
+        public int  FloorNum { get; set; }
+
+        public double ShelfSizeOnSMR { get; set; }
+        public Shelf(double SMR)
         {
             this.shelfId = IdGenrator.giveIdHash();
-            this.floorNum = num;
             this.shelfSizeOnSMR = SMR;
+            List<Item> items=new List<Item>();
         }
         public List<Item> getMyList()
         {
             return items;
         }
-        public int FloorNum
-        {
-            get { return floorNum; }
-            set
-            {
-                floorNum = value;
-            }
-        }
+        
         //האם להקצאות בבנאי את רשימת המוצרים
         //או רק בפונקציה ואז לראות אם אפשר ואם כן אולי כדאי לעשות משתנה נוסף שיסכם את כמות הסמר
         //התפוסים בשביל לא להצטרך לספור בכל פעם מחדש
-        public void addItem(Item item)
-        {
+        public bool addItem(Item item)
+        {// הלבטתי האם לשנות ישר בסמר בכל הוספת או הסרת מוצר ואז בפונקציה שבודקת כמות המקום הפנוי פשוט תקח ממשתנה גודל המדף או שזה לא תואם את האפיון שנתנו לי
+            if (this.placewasLeft() + item.PlaceOnSMR <= this.shelfSizeOnSMR)
+                return true;
+            else
+            {
+                Console.WriteLine("we dont have place for this item");
+                return false;
+            }
             //להוריד פה מהמקום ולוהסיף למערך. ואלי להקצות מערך אם י=עדין לא קיים
+
         }
 
         public override string ToString()
@@ -63,7 +68,7 @@ namespace mekarer
         {
             if (items.Count == 0)
             {
-                return 0;
+                return ShelfSizeOnSMR;
             }
             double places = 0;
             foreach (Item item in items)
@@ -73,21 +78,22 @@ namespace mekarer
             return this.shelfSizeOnSMR - places;
         }
 
-        public Boolean isThisItemInThisShelf(int idnum)
-        {
-            if (items.Count == 0)
-                return false;
-            //return items.Contains(new Item (){ itemId = idnum,Name="" });
+        //public Boolean isThisItemInThisShelf(int idnum)
+        //{
+        //    if (items.Count == 0)
+        //        return false;
+        //    //return items.Contains(new Item (){ itemId = idnum,Name="" });
 
-            foreach (Item item in items)
-            {
-                if (item.ItemId == idnum)
-                    return true;
-            }
-            return false;
-        }
+        //    foreach (Item item in items)
+        //    {
+        //        if (item.ItemId == idnum)
+        //            return true;
+        //    }
+        //    return false;
+        //}
         public Item takeOutItem(int itemid)
-        {
+        {    if(items.Count == 0)
+            { return null; }
             foreach (Item item in items)
             {
                 if (item.ItemId == itemid)

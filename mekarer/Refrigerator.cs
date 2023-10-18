@@ -9,19 +9,34 @@ using System.Threading.Tasks;
 namespace mekarer
 {
     internal class Refrigerator
-    {
+    {//אולי כדאי פונקצית הוספת מדף  ?
         //?אם לא רושמים סט אז הסט פרטי?
-        private int refrigeratorId { get; }
-        private string refrigeratorModel { get; set; }
-        private Colors refrigeratorColor { get; set; }
-        private int amountOfShelves { get; set; }
-        private List<Shelf>shelves;
-        //
+        private int refrigeratorId;
+        private string refrigeratorModel;
+        private Colors refrigeratorColor;
+        private int amountOfShelves;
+        private List<Shelf> shelves;
         private static List<Refrigerator> refregitorList;
+       
+        public int RefrigeratorId { get; private set; }
+        public string RefrigeratorModel { get; set; }
 
+        public Colors RefrigeratorColor { get; set; }
+
+        public int AmountOfShelves { get; set; }
+
+       
+        public List<Shelf> getShelvesList()
+        {
+            return shelves;
+        }
+        public static List<Refrigerator> seeRefregitorList()
+        {
+            return refregitorList;
+        }
         public Refrigerator(string model,Colors color, int amount)
-        {  this.refrigeratorId = IdGenrator.giveId();
-           this.refrigeratorId = IdGenrator.giveIdHash();
+        {  this.RefrigeratorId = IdGenrator.giveId();
+           this.RefrigeratorId = IdGenrator.giveIdHash();
             this.refrigeratorModel = model;
             this.refrigeratorColor = color;
             this.amountOfShelves = amount;
@@ -29,10 +44,7 @@ namespace mekarer
             //מהו this
             refregitorList.Add(this);
         }
-        //public static bool isThisShelfExist(int id)
-        //{
 
-        //}
         public override string ToString()
         { string shelvesToString = "this is the ShelvesDetails";
             foreach (Shelf shelf in shelves) { 
@@ -41,29 +53,37 @@ namespace mekarer
             return this.refrigeratorId + " " + this.refrigeratorModel + " " + this.amountOfShelves + " "
                 + this.refrigeratorColor + " " + shelvesToString;
         }
+
+
         public double placeWasLeft()
-        {  double placeWasLeft = 0;
+        {  
+            double placeWasLeft = 0;
             foreach (Shelf shelf in shelves)
             {
                 placeWasLeft += shelf.placewasLeft();
             }
-            return placeWasLeft;
+            return  placeWasLeft;
 
         }
+
+
+
         //האם כבר יהיה למדף קומה או שעכשיו נצטרך לבחור או שעכשיו נקצה לפי איפה שיש מקום 
         public bool enterItemToRefrigerator(Item item)
-        {     if (this.placeWasLeft() <= 0)
+        {     if (this.placeWasLeft() < item.PlaceOnSMR)
                 {
                 Console.WriteLine("there is no place in that refrigerator");
                 return false;
                  }
+
                   foreach (Shelf shelf in shelves)
                   {
-                    if (shelf.placewasLeft() > item.PlaceOnSMR) 
-                    {
-                     shelf.addItem(item);
-                     item.FloorNum = shelf.FloorNum;
-                     }
+                    if (shelf.placewasLeft() >= item.PlaceOnSMR) 
+                    {//הוספה ישירות כי אין צורך לשלוח לפונקציה שבודקת
+                       item.FloorNum = shelf.FloorNum;
+                        shelf.getMyList().Add(item);
+                    }
+
                    }
                   return true;
         }
@@ -72,22 +92,20 @@ namespace mekarer
         {
             foreach (Shelf shelf in shelves)
             {
-                if (shelf.isThisItemInThisShelf(itemid))
+                Item BackItem = shelf.takeOutItem(itemid);
+                
+                if (BackItem !=null)
                 {
-                   Item BackItem=shelf.takeOutItem(itemid);
-                   if (BackItem is null) {
-                        return null;
-                    }
-                      return BackItem;
+                   return BackItem;
+                     
                 }
                
-               
             }
-            Console.WriteLine("there isn't this iteemId on our refrigerator");
-            return null;
+            //Console.WriteLine("there isn't this iteemId on our refrigerator");
+            throw new Exception("there isn't this iteemId on our refrigerator.");
         }
         public void cleanTheRefrigeratorFromExpiredItems()
-        {
+        {   if (shelves.Count != 0)
             foreach(Shelf shelf in shelves)
             {
                 shelf.itemAreExpired();
@@ -103,6 +121,16 @@ namespace mekarer
             }
             return itemsBySpecificKushrut;
         }
+        public List<Item> sortItemByExpiredDate()
+        {
+            List<Item>sortListByExpiredDay= new List<Item>();
+            foreach(Shelf shelf in shelves)
+            {
+                sortListByExpiredDay.AddRange(shelf.sortByDate());
+            }
+            return sortListByExpiredDay;
+
+        }
         public void sortByFreePlace()
         {
             shelves.Sort((x, y) => x.placewasLeft().CompareTo(y.placewasLeft()));
@@ -117,7 +145,8 @@ namespace mekarer
                 Console.WriteLine(shelf);
             }
         }
-        public static void sortRefrgitor()
+        
+        public static void sortRefrgitors()
         {
             refregitorList.Sort((x,y)=>x.placeWasLeft().CompareTo(y.placeWasLeft()));
             refregitorList.Reverse();
@@ -126,13 +155,16 @@ namespace mekarer
                 Console.WriteLine(refrigerator);
             }
         }
+
+
+
         //כעת בפונקציות של הקניות לא יודעת אם לעבור דף או לא?
         public void getReadyShopping()
         {
             List<Item> newList = new List<Item>();
             List<Item> longList = new List<Item>();
-            double placefree=placeWasLeft();
-            if (placefree < 29)
+            double placefree=this.placeWasLeft();
+            if (placefree < 20)
             {
                 while (placefree < 20)
                 { 
@@ -140,7 +172,7 @@ namespace mekarer
                 {
                   List<Item>sortedShelvsListByDate=  shelf.sortByDate();
                   sortedShelvsListByDate.Reverse();
-
+                //לא השתמשתי בפונקציה שקיימת במדף כי רציתי לקבל את גודל המוצר שהוסר
                     foreach (Item item in sortedShelvsListByDate)
                     {
                         if (!item.isExpired())
@@ -150,7 +182,8 @@ namespace mekarer
 
                         }
                     }
-                }
+                 }
+
                
                
                 

@@ -33,8 +33,9 @@ namespace mekarer
         public int FloorNum
         {
             get { return floorNum; }
-            set {
-                floorNum = value; } }
+            set { 
+                floorNum = value; } 
+        }
 
         //בנאי זה נוצר בשביל פונקצית קונטיין
         public Item(int itemId,string name)
@@ -42,7 +43,7 @@ namespace mekarer
             this.itemId = itemId;
             this.name = name;
         }
-        public Item(string name,DateTime date,Kinds kind,Kashruiot kashrut,double SMR,int floorNum)
+        public Item(string name,DateTime date,Kinds kind,Kashruiot kashrut,double SMR)
         {
             this.ItemId = IdGenrator.giveIdHash();
             this.Name = name;
@@ -50,7 +51,6 @@ namespace mekarer
             this.kind = kind;
             this.Kashrut = kashrut;
             this.PlaceOnSMR = SMR;
-            this.FloorNum = floorNum;
         }
         public override string ToString()
         {
