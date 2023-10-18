@@ -69,11 +69,11 @@ namespace mekarer
 
 
         //האם כבר יהיה למדף קומה או שעכשיו נצטרך לבחור או שעכשיו נקצה לפי איפה שיש מקום 
-        public bool enterItemToRefrigerator(Item item)
+        public void enterItemToRefrigerator(Item item)
         {     if (this.placeWasLeft() < item.PlaceOnSMR)
                 {
                 Console.WriteLine("there is no place in that refrigerator");
-                return false;
+               
                  }
 
                   foreach (Shelf shelf in shelves)
@@ -85,7 +85,7 @@ namespace mekarer
                     }
 
                    }
-                  return true;
+                
         }
 
         public Item takeOutItem(int itemid)
@@ -140,6 +140,7 @@ namespace mekarer
             //    Console.WriteLine(item);
             //}
             shelves.Reverse();
+            if(shelves.Count > 0)
             foreach (Shelf shelf in shelves)
             {
                 Console.WriteLine(shelf);
@@ -150,6 +151,7 @@ namespace mekarer
         {
             refregitorList.Sort((x,y)=>x.placeWasLeft().CompareTo(y.placeWasLeft()));
             refregitorList.Reverse();
+            if(refregitorList.Count > 0)
             foreach(Refrigerator refrigerator in refregitorList)
             {
                 Console.WriteLine(refrigerator);

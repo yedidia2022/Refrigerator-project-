@@ -9,8 +9,11 @@ using System.Xml.Linq;
 namespace mekarer
 {
     internal class Program
-    {   public static void menuProgram()
+    {
+        public static void menuProgram()
         {
+            string inputStr;
+            Refrigerator MyRefrigeritor = Refrigerator.seeRefregitorList().First();
             int currentChoice;
             Console.WriteLine("enter 1:the program will give you to choose a refrigerator num and the program prints all the refrigerator's detailes + his capcity detailes" +
                              "  enter 2: the program will give you to choose a refrigerator num and it prints the refrigerator's free place" +
@@ -38,269 +41,166 @@ namespace mekarer
                 {
                     case 1:
                         {
-                            Console.WriteLine("enter the refrgitor number");
-                            strChoice = Console.ReadLine();
-                            if (!int.TryParse(strChoice, out numberChioice))
-                            {
-                                Console.WriteLine("Invalid input!");
-                                break;
-                            }
-                            else
-                            {
-                                List<Refrigerator> newList = new List<Refrigerator>();
-
-                                if ((Refrigerator.seerefregitorList().Exists(x => x.RefrigeratorId == numberChioice)) == false)
-                                {
-                                    Console.WriteLine("we dont have this refrgitor!");
-                                    break;
-                                }
-                                else
-                                {
-                                    foreach (Refrigerator r in Refrigerator.seerefregitorList())
-                                    {
-                                        if (r.RefrigeratorId == numberChioice)
-                                        {
-                                            Console.WriteLine(r);
-                                            break;
-                                        }
-                                    }
-
-                                }
-
-                            }
+                            Console.WriteLine("print all the cacity of mt refregitor {0}", MyRefrigeritor);
                             break;
                         }
                     case 2:
                         {
-                            Console.WriteLine("enter the refrgitor number");
-                            strChoice = Console.ReadLine();
-                            if (!int.TryParse(strChoice, out numberChioice))
-                            {
-                                Console.WriteLine("Invalid input!");
-                                break;
-                            }
-                            else
-                            {
-                                foreach (Refrigerator r in Refrigerator.seerefregitorList())
-                                {
-                                    if (r.RefrigeratorId == numberChioice)
-                                    {
-                                        Console.WriteLine(r.placeWasLeft());
-                                        break;
-                                    }
-                                }
-
-                            }
+                            Console.WriteLine("the place was left in my Refrigertor {0}", MyRefrigeritor.placeWasLeft());
                             break;
                         }
                     case 3:
                         {
-                            bool need = true, refrigetorBool = false;
-                            double place = 0;
-                            string name, inputStr;
-                            DateTime date = DateTime.Now;
-                            Kinds kind = Kinds.FOOD;
-                            Kashruiot kashrut = Kashruiot.FLASHY; ;
-                            double SMR = 0;
-                            int floorNum = 0;
-                            Refrigerator refrigerator = null;
-                           
-                            Console.WriteLine("enter the refrgitor number");
-                            strChoice = Console.ReadLine();
-                            while (!refrigetorBool)
-                            {
-                                if (int.TryParse(strChoice, out numberChioice))
-                                {
-                                    numberChioice = int.Parse(strChoice);
-                                    foreach (Refrigerator r in Refrigerator.seerefregitorList())
-                                    {
-                                        if (r.RefrigeratorId == numberChioice)
-                                        {
-                                            refrigerator = r;
-                                            place = r.placeWasLeft();
-                                        }
-                                    }
 
-                                    Console.WriteLine("enter the item name");
-                                    name = Console.ReadLine();
-                                    while (need)
-                                    {
-                                        Console.WriteLine("enter the item expired date");
-                                        inputStr = Console.ReadLine();
-                                        if (!DateTime.TryParse(inputStr, out date))
-                                        {
-                                            Console.WriteLine("Invalid input! enter valid input ");
-
-                                        }
-                                        else
-                                        {
-                                            date = DateTime.Parse(inputStr);
-                                            need = false;
-                                        }
-
-                                    }
-                                    need = true;
-                                    while (need)
-                                    {
-                                        Console.WriteLine("enter the item kind");
-                                        inputStr = Console.ReadLine();
-                                        if (inputStr.Equals(Kinds.FOOD))
-                                        {
-                                            kind = Kinds.FOOD;
-                                            need = false;
-                                        }
-                                        else
-                                            if (inputStr.Equals(Kinds.DRINK))
-                                        {
-                                            kind = Kinds.DRINK;
-                                            need = false;
-                                        }
-
-
-                                        else
-                                            Console.WriteLine("Invalid input! enter valid input ");
-
-
-
-                                    }
-                                    need = true;
-                                    while (need)
-                                    {
-                                        Console.WriteLine("enter the item Kashrut");
-                                        inputStr = Console.ReadLine();
-                                        if (inputStr.Equals(Kashruiot.MILKY))
-                                        {
-                                            kashrut = Kashruiot.MILKY;
-                                            need = false;
-                                        }
-                                        else
-                                            if (inputStr.Equals(Kashruiot.PARVE))
-                                        {
-                                            kashrut = Kashruiot.PARVE;
-                                            need = false;
-                                        }
-
-
-                                        else
-                                            if (inputStr.Equals(Kashruiot.FLASHY))
-                                        {
-                                            kashrut = Kashruiot.FLASHY;
-                                            need = false;
-                                        }
-                                        else
-                                            Console.WriteLine("Invalid input! enter valid input ");
-
-
-
-                                    }
-                                    need = true;
-                                    while (need)
-                                    {
-                                        Console.WriteLine("enter the item size of the item");
-                                        inputStr = Console.ReadLine();
-                                        if (!double.TryParse(inputStr, out SMR))
-                                        {
-                                            Console.WriteLine("Invalid input! enter valid input ");
-
-                                        }
-                                        else
-                                        {
-                                            SMR = double.Parse(inputStr);
-                                            need = false;
-                                        }
-
-                                    }
-                                    need = true;
-                                    while (need)
-                                    {
-                                        Console.WriteLine("enter the item to the floor num");
-                                        inputStr = Console.ReadLine();
-                                        if (!int.TryParse(inputStr, out floorNum))
-                                        {
-                                            Console.WriteLine("Invalid input! enter valid input ");
-
-                                        }
-                                        else
-                                        {
-                                            floorNum = int.Parse(inputStr);
-                                            need = false;
-                                        }
-
-
-                                    }
-                                    
-                                    if (place < SMR) 
-                                    { 
-                                        Console.WriteLine("try another refrugetor");
-                                        refrigetorBool = false;
-                                    }
-                                    else
-                                    {
-                                        refrigetorBool=true; 
-                                    }
-
-
-
-
-                                }
+                            double place;
+                            string name;
+                            DateTime date;
+                            Kinds kind;
+                            Kashruiot kashrut;
+                            double SMR;
+                            Console.WriteLine("enter the item name");
+                            name = Console.ReadLine();
+                            Console.WriteLine("enter the item expired date");
+                            inputStr = Console.ReadLine();
+                            if (!DateTime.TryParse(inputStr, out date))
+                                if (!DateTime.TryParse(inputStr, out date))
+                                    throw new Exception("not valid input for date");
                                 else
-                                {
-                                    Console.WriteLine("Invalid input!");
-                                    refrigetorBool = true;
-                                }
+                                    date = DateTime.Parse(inputStr);
+
+                            Console.WriteLine("enter the item kind");
+                            inputStr = Console.ReadLine();
+
+                            if (inputStr.Equals(Kinds.FOOD))
+                            {
+                                kind = Kinds.FOOD;
 
                             }
-                            foreach(Shelf s in refrigerator.getShelveesLost())
-                                if(s != null)
-                                {
-                                    if(s.FloorNum == floorNum)
-                                        if(s.addItem(newItemFromUser))
-                                }
+                            else
+                                if (inputStr.Equals(Kinds.DRINK))
+                            {
+                                kind = Kinds.DRINK;
+                            }
+                            else
+                                throw new Exception("it is not valid kind");
+                            Console.WriteLine("enter the item Kashrut");
+                            inputStr = Console.ReadLine();
+                            if (inputStr.Equals(Kashruiot.MILKY))
+                            {
+                                kashrut = Kashruiot.MILKY;
+                            }
+                            else
+                                if (inputStr.Equals(Kashruiot.PARVE))
+                            {
+                                kashrut = Kashruiot.PARVE;
+                            }
+                            else
+                                if (inputStr.Equals(Kashruiot.FLASHY))
+                            {
+                                kashrut = Kashruiot.FLASHY;
+                            }
+                            else
+                                throw new Exception("not valid kashrut");
+                            Console.WriteLine("enter the item size of the item");
+                            inputStr = Console.ReadLine();
+                            if (!double.TryParse(inputStr, out SMR))
+                            {
+                                throw new Exception("invalid input for SMR");
+                            }
+                            else
+                            {
+                                SMR = double.Parse(inputStr);
+                            }
+                            Item newItemForEnter = new Item(name, date, kind, kashrut, SMR);
+                            MyRefrigeritor.enterItemToRefrigerator(newItemForEnter);
+                            break;
+                        }
 
+                    case 4:
+                        {
+                            int codeItem;
+                            Console.WriteLine("enter the item code");
+                            inputStr = Console.ReadLine();
+                            if (!int.TryParse(inputStr, out codeItem))
+                                throw new Exception("invalid input for itemCode");
+                            else
+                            {
+                                codeItem = int.Parse(inputStr);
+                                try
+                                {
+                                    MyRefrigeritor.takeOutItem(codeItem);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine("we dont have item with this code");
+                                }
+                            }
+                            break;
+                        }
+
+                    case 5:
+                        {
+                            MyRefrigeritor.cleanTheRefrigeratorFromExpiredItems();
+                            break;
+                        }
+                    case 6:
+                        {
+                            Kinds kind;
+                            Kashruiot Kashrut;
+                            Console.WriteLine("what do you want to eat ?");
+                            inputStr = Console.ReadLine();
+                            if (!Kinds.TryParse(inputStr, out kind))
+                                throw new Exception("invalid input for kind");
+                            else
+                                kind = inputStr.Equals(Kinds.FOOD) ? Kinds.FOOD : Kinds.DRINK;
+
+                            Console.WriteLine("which kashrut do you want ?");
+                            inputStr = Console.ReadLine();
+                            if (!Kashruiot.TryParse(inputStr, out Kashrut))
+                                throw new Exception("invalid input for kashrut");
+                            else
+                                Kashrut = inputStr.Equals(Kashruiot.MILKY) ? Kashruiot.MILKY : inputStr.Equals(Kashruiot.FLASHY) ? Kashruiot.FLASHY : Kashruiot.PARVE;
+                            List<Item> itemsList = MyRefrigeritor.findItemsByKashrut(Kashrut, kind);
+                            if (itemsList.Count > 0)
+                                foreach (Item item in itemsList)
+                                {
+                                    Console.WriteLine(item);
+                                }
 
                             break;
                         }
-                    case 4:
+                    case 7:
                         {
-                            Console.WriteLine("enter the refriget number");
-
-                            strChoice = Console.ReadLine();
-                            if (!int.TryParse(strChoice, out numberChioice))
-                                Console.WriteLine("Invalid input!");
-                                break;
-
-                            foreach(Refrigerator r in Refrigerator.seerefregitorList())
-                            {
-                                if(r != null)
+                            List<Item> itemsList = MyRefrigeritor.sortItemByExpiredDate();
+                            if (itemsList.Count > 0)
+                                foreach (Item item in itemsList)
                                 {
-                                    if(r.RefrigeratorId==numberChioice)
-                                    {
-                                        Console.WriteLine("enter the item name");
-
-                                        strChoice = Console.ReadLine();
-                                        List<Shelf> list = r.getShelveesLost();
-                                        foreach (Item item in r.getShelveesLost())
-                                        {
-                                            if(item != null)
-                                            {
-                                                if(shelf.Name)
-                                            }
-                                        }
-
-                                    }
+                                    Console.WriteLine(item);
                                 }
-                            }
-                            
-                             
 
+                            break;
                         }
+                    case 8:
+                        {
+                            MyRefrigeritor.sortByFreePlace();
+                            break;
+                        }
+                    case 9:
+                        {
+                            Refrigerator.sortRefrgitors();
+                            break;
+                        }
+                    case 100: { break; }
 
                 }
 
             }
+
         }
+
         static void Main(string[] args)
         {
+            menuProgram();
         }
     }
 }

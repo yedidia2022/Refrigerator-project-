@@ -114,13 +114,11 @@ namespace mekarer
             {
                 foreach (Item item in items)
                 {
-                    Console.WriteLine(item);
-                    Console.WriteLine("we checked this item");
+                   
                     //יכולתי פה לשלוח לפונקציה שמוציאה מוצר
                     //אך זה סתם בזבוז כי פהאני כבר יודעת באיזה מוצר ואין לי צורך לחפשו
                     if (!item.isExpired()) 
                     {
-                       
                         this.items.Remove(item);
                     }
                 }

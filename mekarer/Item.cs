@@ -60,9 +60,16 @@ namespace mekarer
         //לכאורה יכולתי לגשת ממחלקת מדף ולבדוק בגט תאריך האם גדוך מהיום אך למען הסדר עשיתי פה
         public Boolean isExpired()
         {
-            if(this.LastDayUse>DateTime.Now)
+            Console.WriteLine(this);
+            if (this.LastDayUse>DateTime.Now)
                 return true;
-            return false;
+            else
+           
+                return false;
+            
+            
+            
+          
         }
         
 
